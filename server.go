@@ -1,11 +1,15 @@
 package main
 
-import "github.com/go-martini/martini"
+import (
+	"fmt"
+	"net/http"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Gru grungee", r.URL.Path[1:])
+}
 
 func main() {
-  m := martini.Classic()
-  m.Get("/", func() string {
-    return "Hello world!"
-  })
-  m.Run()
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":8080", nil)
 }
