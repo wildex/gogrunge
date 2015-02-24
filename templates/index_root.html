@@ -1,0 +1,27 @@
+{{ define "index" }}
+
+<html>
+<body>
+<h1>HELLO ROOT</h1>
+<form action="save">
+	Name:
+	<br>
+	<input type="text" name="Name">
+	<br>
+	Message:
+	<br>
+	<input type="text" name="Message">
+	<br>
+	<br>
+	<input type="submit" value="Submit">
+</form>
+{{range $i, $value := .}}
+<p>
+{{ $value.Id }} 
+{{ $value.Name }} 
+{{ $value.Message }} </p>
+{{end}}
+</body>
+</html>`
+
+{{ end }}
