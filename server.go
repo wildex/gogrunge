@@ -2,12 +2,13 @@ package main
 
 import (
     "net"
-    "net/http"
     "net/http/fcgi"
+    "net/http"
     "html/template"
+    "github.com/gorilla/mux"
+    //"gopkg.in/mgo.v2"
+    //"gopkg.in/mgo.v2/bson"
 )
-
-type FastCGIServer struct{}
 
 type Msg struct {
     Id int
@@ -15,16 +16,30 @@ type Msg struct {
     Message string
 }
 
-func (s FastCGIServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func main() {
+    listener, _ := net.Listen("tcp", "127.0.0.1:9001")
+
+    rtr := mux.NewRouter()
+    rtr.HandleFunc("/", indexHandler)
+    rtr.HandleFunc("/test/", testHandler)
+
+    fcgi.Serve(listener, rtr)
+}
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+
     t := template.New("index.html") //create a new template
     t, _ = t.ParseFiles("templates/index.html") //open and parse a template text file
 
     messages := []Msg{Msg{1, "test", "test12"}, Msg{2, "test2", "test23"}}
-    t.Execute(resp, messages)
+    t.Execute(w, messages)
 }
 
-func main() {
-    listener, _ := net.Listen("tcp", "127.0.0.1:9001")
-    srv := new(FastCGIServer)
-    fcgi.Serve(listener, srv)
+func testHandler(w http.ResponseWriter, r *http.Request) {
+
+    t := template.New("index.html") //create a new template
+    t, _ = t.ParseFiles("templates/index.html") //open and parse a template text file
+
+    messages := []Msg{Msg{1, "dasdas", "testdasdsa12"}, Msg{2, "1123", "dsads"}}
+    t.Execute(w, messages)
 }

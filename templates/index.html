@@ -14,10 +14,11 @@
 	<input type="submit" value="Submit">
 </form>
 {{range $i, $value := .}}
-<p>
-{{ $value.Id }}
-{{ $value.Name }}
-{{ $value.Message }} </p>
+    <p>
+        {{ $value.Id }}
+        {{ $value.Name }}
+        {{ $value.Message }}
+    </p>
 {{end}}
 </body>
 </html>
